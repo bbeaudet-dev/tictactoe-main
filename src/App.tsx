@@ -27,7 +27,6 @@ function App() {
     getGame()
   }, [])
 
-
   const cellClick = (cellIndex: CellIndex) => {
     if (game?.endState) return
 
