@@ -1,18 +1,3 @@
-// tictactoe
-// Game State - Data
-// moves - choosing a square
-// move(game) -> game
-// EndCondition
-// when i make a move, check to see if that should end the game.
-// EndState -> Game State
-
-// 1. Define the Game State - Good :)
-// a. end state
-// b. currentPlayer
-// c. board
-// 2. Define the Move function
-// 3. I need define the end conditions
-
 export type Cell = Player | null
 export type Board = [Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell]
 export type Player = 'o' | 'x'
@@ -57,7 +42,6 @@ export function calculateEndState(game: Game): EndState {
     if (game.board.every((cell) => cell !== null)) return 'tie'
     return undefined
 }
-
 
 // accepts the current state of the game, and the index where the user is trying to make a move
 export function move(game: Game, position: CellIndex): Game {
