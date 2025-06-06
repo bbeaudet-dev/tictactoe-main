@@ -1,7 +1,61 @@
 import { useState, useEffect } from 'react'
-import { SERVER_URL } from '../../db/db.ts'
+import { useNavigate } from 'react-router-dom'
 import { type GameState } from '../../game/game.ts'
 import './GameLobby.css'
+import { SERVER_URL } from '../../utils/constants.ts'
+
+function GameBoard({ board }: { board: GameState['board'] }) {
+    return (
+        <div className="game-board-preview">
+            {board.map((cell, index) => (
+                <div key={index} className="board-cell">
+                    {cell || ''}
+                </div>
+            ))}
+        </div>
+    )
+}
+
+function GameList({ gameList }: { gameList: GameState[] }) {
+    const navigate = useNavigate()
+
+    const joinGame = (gameId: string) => {
+        fetch(`${SERVER_URL}/game/${gameId}`)
+            .then(res => res.json())
+            .then(() => {
+                navigate(`/game/${gameId}`)
+            })
+    }
+
+    return (
+        <div className="game-list">
+            {gameList?.length === 0
+                ? <div className="no-games-message">Sorry, no games to display</div>
+                : gameList?.map((game) => {
+                    return (
+                        <div className="game-block" key={game.id}>
+                            <h4>Game ID: {game.id}</h4>
+                            <div className="game-details">
+                                <p>Current Player: {game.currentPlayer}</p>
+                                <p>Game State: {game.endState || 'In Progress'}</p>
+                                <GameBoard board={game.board} />
+                                <button className="join-button" onClick={() => joinGame(game.id)}>Join Game</button>
+                            </div>
+                        </div>
+                    )
+                })
+            }
+        </div>
+    )
+}
+
+function Sort() {
+    return (
+        <div className="sort-section">
+            <p>Hey, you'll be able to sort your games here eventually</p>
+        </div>
+    )
+}
 
 function GameLobby() {
     const [gameList, setGameList] = useState<GameState[]>()
@@ -16,49 +70,13 @@ function GameLobby() {
         getGameList()
     }, [])
 
-    const joinGame = (gameId: string) => {
-        fetch(`${SERVER_URL}/game/${gameId}`)
-            .then(res => res.json())
-        // .then(res => GO_TO_NEW_URL(res))
-    }
-
     return (
-        <>
-            <h2>Game Lobby</h2>
+        <div className="game-lobby-container">
+            <h2 className="game-lobby-title">Game Lobby</h2>
             <Sort />
-            <GameList />
-        </>
+            {gameList && <GameList gameList={gameList} />}
+        </div>
     )
-
-    function GameList() {
-        return (
-            <>
-                {gameList === null
-                    ? <div>Sorry, no games to display</div>
-                    : gameList.map((game) => {
-                        return (
-                            <div>
-                                <h4>Game ID: {game.id}</h4>
-                                <p>Current Player: {game.currentPlayer}</p>
-                                <p>Game State: {game.endState}</p>
-                                <p>Board: {game.board}</p>
-                                <button onClick={() => joinGame(game.id)}>Join Game</button>
-                            </div>
-                        )
-                    })
-                }
-            </>
-        )
-    }
-
-    function Sort() {
-        return (
-            <>
-                <p>Hey, you'll be able to sort your games here eventually</p>
-            </>
-        )
-    }
-
 }
 
 export default GameLobby

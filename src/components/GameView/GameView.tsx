@@ -1,10 +1,20 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import type { CellIndex, GameState } from '../../game/game.ts'
-import { SERVER_URL } from '../../db/db.ts'
 import './GameView.css'
+import { SERVER_URL } from '../../utils/constants.ts'
 
 function GameView() {
+    const { gameId } = useParams()
     const [gameState, setGameState] = useState<GameState | null>(null)
+
+    useEffect(() => {
+        if (gameId) {
+            fetch(`${SERVER_URL}/game/${gameId}`)
+                .then(res => res.json())
+                .then(res => setGameState(res))
+        }
+    }, [gameId])
 
     const cellClick = (cellIndex: CellIndex) => {
         if (gameState?.endState) return

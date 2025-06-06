@@ -1,14 +1,14 @@
 import express from 'express'
 import cors from 'cors'
-import { initialGameState, move, type GameState } from '../game/game.ts'
-import { gamesTable } from './schema'
+import { initialGameState, move } from './game/game.ts'
+import { gamesTable } from './db/schema.ts'
 import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 import { eq } from 'drizzle-orm'
+import { SERVER_URL } from './utils/constants.ts'
 
 const app = express()
 const port = 3000
-export const SERVER_URL = `http://localhost:3000${port}`
 
 app.use(express.json())
 app.use(cors())
@@ -111,4 +111,4 @@ app.post('/move', async (req, res) => {
     }
 })
 
-app.listen(port, () => console.log(`Server running on port ${port}`))
+app.listen(port, () => console.log(`Server running on ${SERVER_URL}`))
