@@ -12,6 +12,8 @@
 }
 
 .sort-section {
+    display: flex;
+    flex-direction: row;
     background-color: #f8f9fa;
     padding: 1rem;
     border-radius: 8px;
@@ -38,7 +40,7 @@
     transform: translateY(-4px);
 }
 
-.game-block h4 {
+.game-block h4 {git 
     color: #2c3e50;
     margin: 0 0 1rem 0;
     font-size: 1.2rem;

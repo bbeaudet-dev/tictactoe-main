@@ -34,10 +34,9 @@ function GameList({ gameList }: { gameList: GameState[] }) {
                 : gameList?.map((game) => {
                     return (
                         <div className="game-block" key={game.id}>
-                            <h4>Game ID: {game.id}</h4>
+                            <h5>Game ID: {game.id}</h5>
                             <div className="game-details">
-                                <p>Current Player: {game.currentPlayer}</p>
-                                <p>Game State: {game.endState || 'In Progress'}</p>
+                                <p>{game.currentPlayer} is up, game is {game.endState || 'In Progress'}</p>
                                 <GameBoard board={game.board} />
                                 <button className="join-button" onClick={() => joinGame(game.id)}>Join Game</button>
                             </div>
@@ -52,7 +51,11 @@ function GameList({ gameList }: { gameList: GameState[] }) {
 function Sort() {
     return (
         <div className="sort-section">
-            <p>Hey, you'll be able to sort your games here eventually</p>
+            <p>Sort by game id, alphabetical</p>
+            <p>Sort by current player (x,o,n/a)</p>
+            <p>sort by game state (x win, o win, tie, in progress)</p>
+            <p>sort by # of moves made</p>
+            <p>sort by date created/update (oldest, newest, specific date)</p>
         </div>
     )
 }
