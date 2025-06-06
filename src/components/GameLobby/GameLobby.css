@@ -1,7 +1,7 @@
 .game-lobby-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 0rem 2rem;
 }
 
 .game-lobby-title {
@@ -23,32 +23,38 @@
 }
 
 .game-list {
-    display: grid;
+    display: flex;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.5rem;
 }
 
 .game-block {
+    display: flex;
+    flex-direction: column;
     background-color: white;
     border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
 }
+
 .game-block:hover {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
+    background-color: #eafaf1
 }
+
 .game-block h4 {
     color: #2c3e50;
     margin: 0 0 1rem 0;
     font-size: 1.2rem;
 }
 
-.game-details {
+.game-display {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
+
 .game-details p {
     margin: 0;
     color: #6c757d;
@@ -63,8 +69,10 @@
     padding: 4px;
     border-radius: 8px;
     margin: 1rem 0;
-    max-width: 150px;
+    max-width: 20px;
+    min-width: 200px;
 }
+
 .board-cell {
     aspect-ratio: 1;
     background-color: white;
@@ -78,7 +86,7 @@
 }
 
 .join-button {
-    background-color: #3498db;
+    background-color: #27ae60;
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
@@ -88,8 +96,41 @@
     margin-top: 1rem;
     transition: background-color 0.2s ease;
 }
+
 .join-button:hover {
+    background-color: #1e8449;
+}
+
+.view-button {
     background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 1rem;
+    transition: background-color 0.2s ease;
+}
+
+.view-button:hover {
+    background-color: #1f5f8b;
+}
+
+.view-completed-button {
+    background-color: #d35400;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 1rem;
+    transition: background-color 0.2s ease;
+}
+
+.view-completed-button:hover {
+    background-color: #b7472a;
 }
 
 .no-games-message {

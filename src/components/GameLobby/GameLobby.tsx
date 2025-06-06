@@ -16,34 +16,53 @@ function GameBoard({ board }: { board: GameState['board'] }) {
     )
 }
 
-function GameList({ gameList }: { gameList: GameState[] }) {
+function AllGamesList({ games }: { games: GameState[] }) {
+    const buttonId = "view-button"
+    return gamesList(games, buttonId)
+}
+
+function InProgressGamesList({ games }: { games: GameState[] }) {
+    const inProgressGames = games.filter(game => !game.endState)
+    const buttonId = "join-button"
+    return gamesList(inProgressGames, buttonId)
+}
+
+function CompletedGamesList({ games }: { games: GameState[] }) {
+    const completedGameList = games.filter(game => game.endState)
+    const buttonId = "view-completed-button"
+    return gamesList(completedGameList, buttonId)
+}
+
+function gamesList(games: GameState[], buttonId: string ) {
     const navigate = useNavigate()
-    const joinGame = (gameId: string) => {
+    const joinGame = (gameId: string) => { // why does this need to be inside GameList??
         fetch(`${SERVER_URL}/game/${gameId}`)
             .then(res => res.json())
             .then(() => {
                 navigate(`/game/${gameId}`)
             })
     }
-
+    const buttonTag = buttonId === "view-button" || "view-completed-button" ? "View Game" : "Join Game"
     return (
-        <div className="game-list">
-            {gameList?.length === 0
-                ? <div className="no-games-message">Sorry, no games to display</div>
-                : gameList?.map((game) => {
-                    return (
-                        <div className="game-block" key={game.id}>
-                            <h5>Game ID: {game.id}</h5>
-                            <div className="game-details">
-                                <p>{game.currentPlayer} is up, game is {game.endState || 'In Progress'}</p>
-                                <GameBoard board={game.board} />
-                                <button className="join-button" onClick={() => joinGame(game.id)}>Join Game</button>
+        <>
+            <div className="game-list">
+                {games?.length === 0
+                    ? <div className="no-games-message">Sorry, no games to display</div>
+                    : games?.map((game) => {
+                        return (
+                            <div className="game-block" key={game.id}>
+                                <div className="game-details">
+                                    <p>ID: {game.id}</p>
+                                    <p>{game.currentPlayer} is up, game is {game.endState || 'In Progress'}</p>
+                                    <GameBoard board={game.board} />
+                                    <button className={buttonId} onClick={() => joinGame(game.id)}>{buttonTag}</button>
+                                </div>
                             </div>
-                        </div>
-                    )
-                })
-            }
-        </div>
+                        )
+                    })
+                }
+            </div>
+        </>
     )
 }
 
@@ -62,6 +81,7 @@ function Sort() {
     )
 }
 
+// TOP LEVEL
 function GameLobby() {
     const [gameList, setGameList] = useState<GameState[]>()
 
@@ -78,8 +98,15 @@ function GameLobby() {
     return (
         <div className="game-lobby-container">
             <h2 className="game-lobby-title">Game Lobby</h2>
+            <h2>Create New Game</h2>
+            <p>Choose 3x3, 2 player, 3</p>
+            <h2>In-Progress Games</h2>
+            {gameList && <InProgressGamesList games={gameList} />}
+            <h2>Completed Games</h2>
+            {gameList && <CompletedGamesList games={gameList} />}
+            <h2>All Games</h2>
+            {gameList && <AllGamesList games={gameList} />}
             <Sort />
-            {gameList && <GameList gameList={gameList} />}
         </div>
     )
 }
