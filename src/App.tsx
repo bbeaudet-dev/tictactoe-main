@@ -30,8 +30,6 @@ function App() {
   const cellClick = (cellIndex: CellIndex) => {
     if (game?.endState) return
 
-    // cellClick needs to send req to Server instead (via fetch(SERVER_URL+'/move', {cellIndex}))
-    // in other words, the client isn't allowed to make a move directly, instead it REQUESTS to make a move, then updates state with the response
     fetch(`${SERVER_URL}/move`, {
       method: "POST",
       body: JSON.stringify({ cellIndex: cellIndex, gameId: game?.id }),
@@ -43,29 +41,39 @@ function App() {
       .then(res => setGame(res))
   }
 
+  function GameBoard() {
+    return (
+      <div className="game-board">
+        {isLoading && "Loading..."}
+        {!isLoading && <>
+          <div className="board-row">
+            <div onClick={() => cellClick(0)} className={`cell ${game.board[0]?.toLowerCase() || ''}`} >{game.board[0]}</div>
+            <div onClick={() => cellClick(1)} className={`cell ${game.board[1]?.toLowerCase() || ''}`} >{game.board[1]}</div>
+            <div onClick={() => cellClick(2)} className={`cell ${game.board[2]?.toLowerCase() || ''}`} >{game.board[2]}</div>
+          </div>
+          <div className="board-row">
+            <div onClick={() => cellClick(3)} className={`cell ${game.board[3]?.toLowerCase() || ''}`} >{game.board[3]}</div>
+            <div onClick={() => cellClick(4)} className={`cell ${game.board[4]?.toLowerCase() || ''}`} >{game.board[4]}</div>
+            <div onClick={() => cellClick(5)} className={`cell ${game.board[5]?.toLowerCase() || ''}`} >{game.board[5]}</div>
+          </div>
+          <div className="board-row">
+            <div onClick={() => cellClick(6)} className={`cell ${game.board[6]?.toLowerCase() || ''}`} >{game.board[6]}</div>
+            <div onClick={() => cellClick(7)} className={`cell ${game.board[7]?.toLowerCase() || ''}`} >{game.board[7]}</div>
+            <div onClick={() => cellClick(8)} className={`cell ${game.board[8]?.toLowerCase() || ''}`} >{game.board[8]}</div>
+          </div>
+        </>}
+      </div >
+    )
+  }
+
+
   return (
-    <div className="game-board">
+    <div className="application">
       <h1>Tic-Tac-Toe</h1>
-      {isLoading && "Loading..."}
-      {!isLoading && <>
-        <div className="board-row">
-          <div onClick={() => cellClick(0)} className="cell">{game.board[0]}</div>
-          <div onClick={() => cellClick(1)} className="cell">{game.board[1]}</div>
-          <div onClick={() => cellClick(2)} className="cell">{game.board[2]}</div>
-        </div>
-        <div className="board-row">
-          <div onClick={() => cellClick(3)} className="cell">{game.board[3]}</div>
-          <div onClick={() => cellClick(4)} className="cell">{game.board[4]}</div>
-          <div onClick={() => cellClick(5)} className="cell">{game.board[5]}</div>
-        </div>
-        <div className="board-row">
-          <div onClick={() => cellClick(6)} className="cell">{game.board[6]}</div>
-          <div onClick={() => cellClick(7)} className="cell">{game.board[7]}</div>
-          <div onClick={() => cellClick(8)} className="cell">{game.board[8]}</div>
-        </div>
-      </>}
+      <GameBoard />
       {game?.endState && <div>{game.endState}</div>}
-    </div >
+      <p>Current game ID: {game?.id}</p>
+    </div>
   )
 }
 

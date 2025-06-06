@@ -1,8 +1,8 @@
 export type Cell = Player | null
 export type Board = [Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell, Cell]
-export type Player = 'o' | 'x'
+export type Player = 'O' | 'X'
 export type CellIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
-export type EndState = 'x' | 'o' | 'tie' | undefined
+export type EndState = 'X' | 'O' | 'tie' | undefined
 
 export type Game = {
     id: string
@@ -14,7 +14,7 @@ export const initialGameState = (): Game => {
     return {
         id: crypto.randomUUID(),
         board: [null, null, null, null, null, null, null, null, null],
-        currentPlayer: 'x',
+        currentPlayer: 'X',
     }
 }
 
@@ -33,12 +33,12 @@ const winningStates: CellIndex[][] = [
 const playerWins = (game: Game, player: Player) => {
     return winningStates.some((winState) => winState.every((cellIndex) => game.board[cellIndex] === player))
 }
-const xWins = (game: Game) => playerWins(game, 'x')
-const oWins = (game: Game) => playerWins(game, 'o')
+const xWins = (game: Game) => playerWins(game, 'X')
+const oWins = (game: Game) => playerWins(game, 'O')
 
 export function calculateEndState(game: Game): EndState {
-    if (xWins(game)) return 'x'
-    if (oWins(game)) return 'o'
+    if (xWins(game)) return 'X'
+    if (oWins(game)) return 'O'
     if (game.board.every((cell) => cell !== null)) return 'tie'
     return undefined
 }
@@ -53,7 +53,7 @@ export function move(game: Game, position: CellIndex): Game {
     // plausible nextGame state
     const nextGame = structuredClone(game)
     nextGame.board[position] = game.currentPlayer
-    nextGame.currentPlayer = nextGame.currentPlayer === 'x' ? 'o' : 'x'
+    nextGame.currentPlayer = nextGame.currentPlayer === 'X' ? 'O' : 'X'
     nextGame.endState = calculateEndState(nextGame)
     return nextGame
 }
