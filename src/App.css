@@ -1,9 +1,14 @@
-.game-board {
+.application {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 20px auto;
-  width: 300px;
+  margin: 30px;
+}
+
+.game-board {
+  justify-items: center;
+  margin: 0;
+  width: 400px;
 }
 
 .board-row {
@@ -20,8 +25,25 @@
   font-size: 48px;
   font-weight: bold;
   cursor: pointer;
+  border-radius: 10px;
+}
+
+.cell.x {
+  background-color: #ffebee;
+  color: #d32f2f;
+}
+
+/* Style for O cells */
+.cell.o {
+  background-color: #e8f5e9;
+  color: #2e7d32; 
 }
 
 .cell:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Keep hover effect for empty cells */
+.cell:not(.x):not(.o):hover {
   background-color: rgba(0, 0, 0, 0.05);
 }

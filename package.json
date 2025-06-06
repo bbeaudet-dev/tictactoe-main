@@ -4,13 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "bun run --watch server.ts",
+    "dev": "bun run --watch db.ts",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.10",
+    "@tailwindcss/vite": "^4.1.8",
     "@types/express": "^5.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
@@ -19,11 +20,13 @@
     "postgres": "^3.4.7",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "tailwindcss": "^4.1.8",
     "uuid": "^11.1.0",
     "vitest": "^3.1.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
+    "@types/cors": "^2.8.18",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react-swc": "^3.9.0",
