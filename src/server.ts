@@ -1,10 +1,11 @@
 import express from 'express'
 import cors from 'cors'
-import { initialGameState, move, type Game } from '../game/game.ts'
-import { gamesTable } from './schema'
+import { initialGameState, move } from './game/game.ts'
+import { gamesTable } from './db/schema.ts'
 import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 import { eq } from 'drizzle-orm'
+import { SERVER_URL } from './utils/constants.ts'
 
 const app = express()
 const port = 3000
@@ -21,9 +22,9 @@ const url = process.env.DATABASE_URL
 if (!url) {
     throw new Error('DATABASE_URL is not set')
 }
-
 const client = postgres(url, { ssl: { rejectUnauthorized: false } })
 const db = drizzle(client)
+
 
 // GET all games
 app.get('/game/all', async (req, res) => {
@@ -58,8 +59,8 @@ app.get('/game/:id', async (req, res) => {
     }
 })
 
-// GET new game (create new game)
-app.get('/game', async (req, res) => {
+// POST new game
+app.post('/game', async (req, res) => {
     console.log('Creating new game...')
     try {
         const newGame = initialGameState()
@@ -110,4 +111,4 @@ app.post('/move', async (req, res) => {
     }
 })
 
-app.listen(port, () => console.log(`Server running on port ${port}`))
+app.listen(port, () => console.log(`Server running on ${SERVER_URL}`))

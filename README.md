@@ -29,3 +29,9 @@ CURRENT STATE:
 - multiple browser windows load the same game, but no live updates, i.e. I will only see my mom's move after I make my own, which might be a spot that is already taken
 - QUESTION: what is causing multiple windows to load the same game? Does that mean that the server is still only capable of running one game at a time? How does it know to keep updating the one game (based on gameId) if several browsers are running? It's not like there's a "current game" variable on the server...
 - different games are not associated with any URL
+
+GOALS:
+- add routing, ability to navigate directly to a game
+- create a lobby that lists joinable games and ability to start a new game
+- add live updates, so new moves appear without having to refresh
+- bonus: add rematch option + results
