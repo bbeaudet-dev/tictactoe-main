@@ -1,17 +1,17 @@
 import express from 'express'
 import cors from 'cors'
-import { initialGameState, move } from './game/game.ts'
-import { gamesTable } from './db/schema.ts'
+import { initialGameState, move } from './src/game/game.ts'
+import { gamesTable } from './src/db/schema.ts'
 import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 import { eq } from 'drizzle-orm'
-import { SERVER_URL } from './utils/constants.ts'
+import { SERVER_URL } from './src/utils/constants.ts'
 
 const app = express()
 const port = 3000
 
 app.use(express.json())
-app.options('*', cors())
+app.use(cors())
 
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.url}`)
