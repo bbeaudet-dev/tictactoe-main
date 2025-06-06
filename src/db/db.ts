@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import { initialGameState, move, type Game } from '../game/game.ts'
+import { initialGameState, move, type GameState } from '../game/game.ts'
 import { gamesTable } from './schema'
 import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
@@ -8,6 +8,7 @@ import { eq } from 'drizzle-orm'
 
 const app = express()
 const port = 3000
+export const SERVER_URL = `http://localhost:3000${port}`
 
 app.use(express.json())
 app.use(cors())
@@ -21,9 +22,9 @@ const url = process.env.DATABASE_URL
 if (!url) {
     throw new Error('DATABASE_URL is not set')
 }
-
 const client = postgres(url, { ssl: { rejectUnauthorized: false } })
 const db = drizzle(client)
+
 
 // GET all games
 app.get('/game/all', async (req, res) => {
@@ -58,8 +59,8 @@ app.get('/game/:id', async (req, res) => {
     }
 })
 
-// GET new game (create new game)
-app.get('/game', async (req, res) => {
+// POST new game
+app.post('/game', async (req, res) => {
     console.log('Creating new game...')
     try {
         const newGame = initialGameState()

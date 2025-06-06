@@ -4,13 +4,13 @@ export type Player = 'O' | 'X'
 export type CellIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
 export type EndState = 'X' | 'O' | 'tie' | undefined
 
-export type Game = {
+export type GameState = {
     id: string
     board: Board,
     currentPlayer: Player,
     endState?: EndState,
 }
-export const initialGameState = (): Game => {
+export const initialGameState = (): GameState => {
     return {
         id: crypto.randomUUID(),
         board: [null, null, null, null, null, null, null, null, null],
@@ -30,13 +30,13 @@ const winningStates: CellIndex[][] = [
 ]
 
 
-const playerWins = (game: Game, player: Player) => {
+const playerWins = (game: GameState, player: Player) => {
     return winningStates.some((winState) => winState.every((cellIndex) => game.board[cellIndex] === player))
 }
-const xWins = (game: Game) => playerWins(game, 'X')
-const oWins = (game: Game) => playerWins(game, 'O')
+const xWins = (game: GameState) => playerWins(game, 'X')
+const oWins = (game: GameState) => playerWins(game, 'O')
 
-export function calculateEndState(game: Game): EndState {
+export function calculateEndState(game: GameState): EndState {
     if (xWins(game)) return 'X'
     if (oWins(game)) return 'O'
     if (game.board.every((cell) => cell !== null)) return 'tie'
@@ -44,7 +44,7 @@ export function calculateEndState(game: Game): EndState {
 }
 
 // accepts the current state of the game, and the index where the user is trying to make a move
-export function move(game: Game, position: CellIndex): Game {
+export function move(game: GameState, position: CellIndex): GameState {
     if (game.board[position] != null) {
         console.log('that move is already taken!')
         return game
