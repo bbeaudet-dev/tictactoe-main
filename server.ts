@@ -5,10 +5,9 @@ import { gamesTable } from './src/db/schema.ts'
 import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 import { eq } from 'drizzle-orm'
-import { SERVER_URL } from './src/utils/constants.ts'
+import { PORT, SERVER_URL } from './src/utils/constants.ts'
 
 const app = express()
-const port = 3000
 
 app.use(express.json())
 app.use(cors())
@@ -111,4 +110,4 @@ app.post('/move', async (req, res) => {
     }
 })
 
-app.listen(port, () => console.log(`Server running on ${SERVER_URL}`))
+app.listen(PORT, () => console.log(`Server running on ${SERVER_URL}`))
