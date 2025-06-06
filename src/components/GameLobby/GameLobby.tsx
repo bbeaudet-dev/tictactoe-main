@@ -18,7 +18,6 @@ function GameBoard({ board }: { board: GameState['board'] }) {
 
 function GameList({ gameList }: { gameList: GameState[] }) {
     const navigate = useNavigate()
-
     const joinGame = (gameId: string) => {
         fetch(`${SERVER_URL}/game/${gameId}`)
             .then(res => res.json())
@@ -51,11 +50,14 @@ function GameList({ gameList }: { gameList: GameState[] }) {
 function Sort() {
     return (
         <div className="sort-section">
+            <p>Sorting/filtering coming soon!</p>
+            {/* 
             <p>Sort by game id, alphabetical</p>
             <p>Sort by current player (x,o,n/a)</p>
             <p>sort by game state (x win, o win, tie, in progress)</p>
             <p>sort by # of moves made</p>
-            <p>sort by date created/update (oldest, newest, specific date)</p>
+            <p>sort by date created/update (oldest, newest, specific date)</p> 
+            */}
         </div>
     )
 }

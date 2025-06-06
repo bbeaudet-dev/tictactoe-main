@@ -35,12 +35,10 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
 }
-
 .game-block:hover {
-    transform: translateY(-4px);
+    transform: translateY(-5px);
 }
-
-.game-block h4 {git 
+.game-block h4 {
     color: #2c3e50;
     margin: 0 0 1rem 0;
     font-size: 1.2rem;
@@ -51,7 +49,6 @@
     flex-direction: column;
     gap: 0.5rem;
 }
-
 .game-details p {
     margin: 0;
     color: #6c757d;
@@ -66,8 +63,8 @@
     padding: 4px;
     border-radius: 8px;
     margin: 1rem 0;
+    max-width: 150px;
 }
-
 .board-cell {
     aspect-ratio: 1;
     background-color: white;
@@ -91,7 +88,6 @@
     margin-top: 1rem;
     transition: background-color 0.2s ease;
 }
-
 .join-button:hover {
     background-color: #2980b9;
 }
