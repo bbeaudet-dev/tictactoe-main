@@ -87,7 +87,7 @@ function GameLobby() {
     const [gameList, setGameList] = useState<GameState[]>()
 
     function getGameList() {
-        fetch(`${SERVER_URL}/api/games`)
+        fetch(`${SERVER_URL}/all`)
             .then(response => response.json())
             .then(games => setGameList(games))
     }
@@ -101,7 +101,7 @@ function GameLobby() {
         fetch(`${SERVER_URL}/new`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+               "Content-Type": "application/json"
             }
         })
             .then(res => res.json())
