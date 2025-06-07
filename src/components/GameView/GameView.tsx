@@ -6,7 +6,7 @@ import { SERVER_URL } from '../../utils/constants.ts'
 
 function GameView() {
     const { gameId } = useParams()
-    const [gameState, setGameState] = useState<GameState | null>(null)
+    const [ gameState, setGameState ] = useState<GameState | null>(null)
 
     useEffect(() => {
         if (gameId) {
@@ -45,19 +45,19 @@ function GameView() {
                 {!isLoading &&
                     <>
                         <div className="board-row">
-                            <div onClick={() => cellClick(0)} className={`cell ${gameState.board[0]?.toLowerCase() || ''}`} >{gameState.board[0]}</div>
-                            <div onClick={() => cellClick(1)} className={`cell ${gameState.board[1]?.toLowerCase() || ''}`} >{gameState.board[1]}</div>
-                            <div onClick={() => cellClick(2)} className={`cell ${gameState.board[2]?.toLowerCase() || ''}`} >{gameState.board[2]}</div>
+                            <div onClick={() => cellClick(0)} className={`cell ${gameState.board[0] || ''}`} >{gameState.board[0]}</div>
+                            <div onClick={() => cellClick(1)} className={`cell ${gameState.board[1] || ''}`} >{gameState.board[1]}</div>
+                            <div onClick={() => cellClick(2)} className={`cell ${gameState.board[2] || ''}`} >{gameState.board[2]}</div>
                         </div>
                         <div className="board-row">
-                            <div onClick={() => cellClick(3)} className={`cell ${gameState.board[3]?.toLowerCase() || ''}`} >{gameState.board[3]}</div>
-                            <div onClick={() => cellClick(4)} className={`cell ${gameState.board[4]?.toLowerCase() || ''}`} >{gameState.board[4]}</div>
-                            <div onClick={() => cellClick(5)} className={`cell ${gameState.board[5]?.toLowerCase() || ''}`} >{gameState.board[5]}</div>
+                            <div onClick={() => cellClick(3)} className={`cell ${gameState.board[3] || ''}`} >{gameState.board[3]}</div>
+                            <div onClick={() => cellClick(4)} className={`cell ${gameState.board[4] || ''}`} >{gameState.board[4]}</div>
+                            <div onClick={() => cellClick(5)} className={`cell ${gameState.board[5] || ''}`} >{gameState.board[5]}</div>
                         </div>
                         <div className="board-row">
-                            <div onClick={() => cellClick(6)} className={`cell ${gameState.board[6]?.toLowerCase() || ''}`} >{gameState.board[6]}</div>
-                            <div onClick={() => cellClick(7)} className={`cell ${gameState.board[7]?.toLowerCase() || ''}`} >{gameState.board[7]}</div>
-                            <div onClick={() => cellClick(8)} className={`cell ${gameState.board[8]?.toLowerCase() || ''}`} >{gameState.board[8]}</div>
+                            <div onClick={() => cellClick(6)} className={`cell ${gameState.board[6] || ''}`} >{gameState.board[6]}</div>
+                            <div onClick={() => cellClick(7)} className={`cell ${gameState.board[7] || ''}`} >{gameState.board[7]}</div>
+                            <div onClick={() => cellClick(8)} className={`cell ${gameState.board[8] || ''}`} >{gameState.board[8]}</div>
                         </div>
                     </>}
             </div >
@@ -72,7 +72,6 @@ function GameView() {
             </>
         )
     }
-
 }
 
 export default GameView

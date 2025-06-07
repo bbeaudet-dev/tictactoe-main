@@ -22,12 +22,12 @@
   border-radius: 10px;
 }
 
-.cell.x {
+.cell.X {
   background-color: #ffebee;
   color: #d32f2f;
 }
 
-.cell.o {
+.cell.O {
   background-color: #e8f5e9;
   color: #2e7d32; 
 }
@@ -36,6 +36,6 @@
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-.cell:not(.x):not(.o):hover {
+.cell:not(.X):not(.O):hover {
   background-color: rgba(0, 0, 0, 0.05);
 }

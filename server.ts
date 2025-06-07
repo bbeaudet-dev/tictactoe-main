@@ -1,6 +1,6 @@
 import express from 'express'
 import cors from 'cors'
-import { initialGameState, move } from './src/game/game.ts'
+import { initialGameState, move, type GameState } from './src/game/game.ts'
 import { gamesTable } from './src/db/schema.ts'
 import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
@@ -24,9 +24,8 @@ if (!url) {
 const client = postgres(url, { ssl: { rejectUnauthorized: false } })
 const db = drizzle(client)
 
-
 // GET all games
-app.get('/game/all', async (req, res) => {
+app.get('/all', async (_req, res) => {
     console.log('Getting all games...')
     try {
         const games = await db.select().from(gamesTable)
@@ -59,7 +58,7 @@ app.get('/game/:id', async (req, res) => {
 })
 
 // POST new game
-app.post('/game', async (req, res) => {
+app.post('/new', async (_req, res) => {
     console.log('Creating new game...')
     try {
         const newGame = initialGameState()
@@ -70,9 +69,8 @@ app.post('/game', async (req, res) => {
             currentPlayer: newGame.currentPlayer,
             endState: newGame.endState,
         }).returning()
-
-        console.log('Game saved to database:', result[0]) // Add debug log
-        res.json(result[0])
+        console.log('Game saved to database:', result[0])
+        res.json(result[0].id)
     } catch (error) {
         console.error('Error creating game:', error)
         res.status(500).json({ error: 'Failed to create game' })
@@ -92,8 +90,8 @@ app.post('/move', async (req, res) => {
             console.log('Game not found')
             return res.status(404).json({ error: 'Game not found' })
         }
-        const game = result[0]
-        const updatedGame = move(game, cellIndex)
+        const game = result[0] as unknown as GameState
+        const updatedGame = move(game, cellIndex as any)
         const savedGame = await db.update(gamesTable)
             .set({
                 board: updatedGame.board,
