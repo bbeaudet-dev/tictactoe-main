@@ -1,32 +1,34 @@
 import express from 'express'
 import cors from 'cors'
-import { initialGameState, move } from './src/game/game.ts'
+import { initialGameState, move, type GameState } from './src/game/game.ts'
 import { gamesTable } from './src/db/schema.ts'
 import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 import { eq } from 'drizzle-orm'
 import { PORT, SERVER_URL } from './src/utils/constants.ts'
+import { Server } from 'socket.io'
+import { createServer } from 'node:http'
+import { fileURLToPath } from 'node:url'
+import { dirname, join } from 'node:path'
 
 const app = express()
+const server = createServer(app)
+const io = new Server(server)
 
-app.use(express.json())
-app.use(cors())
-
-app.use((req, res, next) => {
-    console.log(`${req.method} ${req.url}`)
-    next()
-})
+const _dirname = dirname(fileURLToPath(import.meta.url))
 
 const url = process.env.DATABASE_URL
-if (!url) {
-    throw new Error('DATABASE_URL is not set')
-}
+if (!url) throw new Error('DATABASE_URL is not set')
 const client = postgres(url, { ssl: { rejectUnauthorized: false } })
 const db = drizzle(client)
 
+// TEST
+app.get('/', (_req, res) => {
+    res.sendFile(join(_dirname, 'index.html'))
+})
 
 // GET all games
-app.get('/game/all', async (req, res) => {
+app.get('/all', async (_req, res) => {
     console.log('Getting all games...')
     try {
         const games = await db.select().from(gamesTable)
@@ -59,7 +61,7 @@ app.get('/game/:id', async (req, res) => {
 })
 
 // POST new game
-app.post('/game', async (req, res) => {
+app.post('/new', async (_req, res) => {
     console.log('Creating new game...')
     try {
         const newGame = initialGameState()
@@ -70,9 +72,8 @@ app.post('/game', async (req, res) => {
             currentPlayer: newGame.currentPlayer,
             endState: newGame.endState,
         }).returning()
-
-        console.log('Game saved to database:', result[0]) // Add debug log
-        res.json(result[0])
+        console.log('Game saved to database:', result[0])
+        res.json(result[0].id)
     } catch (error) {
         console.error('Error creating game:', error)
         res.status(500).json({ error: 'Failed to create game' })
@@ -92,8 +93,8 @@ app.post('/move', async (req, res) => {
             console.log('Game not found')
             return res.status(404).json({ error: 'Game not found' })
         }
-        const game = result[0]
-        const updatedGame = move(game, cellIndex)
+        const game = result[0] as unknown as GameState
+        const updatedGame = move(game, cellIndex as any)
         const savedGame = await db.update(gamesTable)
             .set({
                 board: updatedGame.board,
@@ -110,4 +111,14 @@ app.post('/move', async (req, res) => {
     }
 })
 
-app.listen(PORT, () => console.log(`Server running on ${SERVER_URL}`))
+io.on('connection', (socket) => {
+    socket.on('chat message', (msg) => {
+        io.emit('chat message', msg)
+    })
+})
+
+// app.listen(PORT, () => console.log(`Server running on ${SERVER_URL}`))
+
+server.listen(PORT, () => {
+    console.log(`Server running at ${SERVER_URL}`)
+})

@@ -33,9 +33,9 @@ function CompletedGamesList({ games }: { games: GameState[] }) {
     return gamesList(completedGameList, buttonId)
 }
 
-function gamesList(games: GameState[], buttonId: string ) {
+function gamesList(games: GameState[], buttonId: string) {
     const navigate = useNavigate()
-    const joinGame = (gameId: string) => { // why does this need to be inside GameList??
+    const joinGame = (gameId: string) => {
         fetch(`${SERVER_URL}/game/${gameId}`)
             .then(res => res.json())
             .then(() => {
@@ -81,12 +81,13 @@ function Sort() {
     )
 }
 
+
 // TOP LEVEL
 function GameLobby() {
     const [gameList, setGameList] = useState<GameState[]>()
 
     function getGameList() {
-        fetch(`${SERVER_URL}/game/all`)
+        fetch(`${SERVER_URL}/all`)
             .then(response => response.json())
             .then(games => setGameList(games))
     }
@@ -95,10 +96,24 @@ function GameLobby() {
         getGameList()
     }, [])
 
+    const navigate = useNavigate()
+    const createGame = () => {
+        fetch(`${SERVER_URL}/new`, {
+            method: "POST",
+            headers: {
+               "Content-Type": "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(id => {
+                console.log(id)
+                navigate(`/game/${id}`)
+            })
+    }
     return (
         <div className="game-lobby-container">
             <h2 className="game-lobby-title">Game Lobby</h2>
-            <h2>Create New Game</h2>
+            <button onClick={createGame}>Create New Game</button>
             <p>Choose 3x3, 2 player, 3</p>
             <h2>In-Progress Games</h2>
             {gameList && <InProgressGamesList games={gameList} />}
